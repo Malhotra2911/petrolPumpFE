@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { backendApiUrl } from '../config/config';
 
-const Login = () => {
+const Login = (props) => {
     let navigate = useNavigate();
     const data = {
         username : "",
@@ -23,6 +23,7 @@ const Login = () => {
         console.log(response.data);
         if(response.data.user.token) {
             sessionStorage.setItem('token', response.data.user.token);
+            props.showAlert("Logged in Successfully", "success")
             navigate('/')
         }else {
             alert(response.data.msg)

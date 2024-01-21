@@ -4,7 +4,7 @@ import { backendApiUrl } from '../config/config';
 import { Link } from 'react-router-dom';
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
 
-const ShiftEntry = () => {
+const ShiftEntry = (props) => {
     const data = {
         inDate : "",
         inTime : "",
@@ -97,6 +97,7 @@ const ShiftEntry = () => {
     }
 
     const onEditChange = (e, index) => {
+        const { name, value } = e.target;
         if (index !== undefined) {
             // If index is defined, it means we are dealing with fields inside shiftEntryList
             setEditDatas((prevCredentials) => {
@@ -131,7 +132,6 @@ const ShiftEntry = () => {
     }
 
     function calculateTotalCash() {
-        let totalCash2000 = document.getElementById("totalCash2000").value;
         let totalCash500 = document.getElementById("totalCash500").value;
         let totalCash200 = document.getElementById("totalCash200").value;
         let totalCash100 = document.getElementById("totalCash100").value;
@@ -142,7 +142,7 @@ const ShiftEntry = () => {
         let totalCash2 = document.getElementById("totalCash2").value;
         let totalCash1 = document.getElementById("totalCash1").value;
 
-        let result = Number(totalCash2000) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
+        let result = Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
         credentials["totalCash"] = parseFloat(result) || 0;
         setCredentials({...credentials, ["totalCash"] : result})
     }
@@ -182,7 +182,7 @@ const ShiftEntry = () => {
         let du1 = parseFloat(credentials[du1Id]) || 0;
         let du2 = parseFloat(credentials[du2Id]) || 0;
 
-        let result = Number(stockOpen) - (Number(du1) + Number(du2) + Number(testing));
+        let result = Number(stockOpen) - ((Number(du1) + Number(du2)) - Number(testing));
         credentials[resultId] = parseFloat(result) || 0;
         setCredentials({...credentials, [resultId] : result});
     }
@@ -190,7 +190,6 @@ const ShiftEntry = () => {
     function calculateTotalShiftCollection() {
         let totalPhonepe = document.getElementById("phonePe").value;
         let totalpos = document.getElementById("pos").value;
-        let totalCash2000 = document.getElementById("totalCash2000").value;
         let totalCash500 = document.getElementById("totalCash500").value;
         let totalCash200 = document.getElementById("totalCash200").value;
         let totalCash100 = document.getElementById("totalCash100").value;
@@ -200,12 +199,12 @@ const ShiftEntry = () => {
         let totalCash5 = document.getElementById("totalCash5").value;
         let totalCash2 = document.getElementById("totalCash2").value;
         let totalCash1 = document.getElementById("totalCash1").value;
-        let newCreditElements = document.querySelectorAll("#newCredit")
-        let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
-            return sum + Number(element.value || 0);
-        }, 0);
+        // let newCreditElements = document.querySelectorAll("#newCredit")
+        // let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
+        //     return sum + Number(element.value || 0);
+        // }, 0);
 
-        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash2000) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum);
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
         credentials["totalShiftCollection"] = parseFloat(result) || 0;
         setCredentials({...credentials, ["totalShiftCollection"] : result});
     }
@@ -213,7 +212,6 @@ const ShiftEntry = () => {
     function calculateGrandTotal() {
         let totalPhonepe = document.getElementById("phonePe").value;
         let totalpos = document.getElementById("pos").value;
-        let totalCash2000 = document.getElementById("totalCash2000").value;
         let totalCash500 = document.getElementById("totalCash500").value;
         let totalCash200 = document.getElementById("totalCash200").value;
         let totalCash100 = document.getElementById("totalCash100").value;
@@ -232,10 +230,128 @@ const ShiftEntry = () => {
             return sum + Number(element.value || 0);
         }, 0);
 
-        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash2000) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum) + Number(odlCreditSum);
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum) + Number(odlCreditSum);
         credentials["grandTotal"] = parseFloat(result) || 0;
         setCredentials({...credentials, ["grandTotal"] : result});
     }
+
+    // edit
+    function editcalculateResult(multiplier, cashId, totalCashId) {
+        // Get the input value
+        let inputValue = document.getElementById(cashId).value;
+        // Perform the multiplication
+        let result = multiplier * inputValue;
+        // Display the result in the disabled input field
+        document.getElementById(totalCashId).value = result;
+        // editDatas[totalCashId] = parseFloat(result) || 0;
+        // setEditDatas({...editDatas, [totalCashId] : result})
+        editcalculateTotalCash();
+    }
+
+    function editcalculateTotalCash() {
+        let totalCash500 = document.getElementById("edittotalCash500").value;
+        let totalCash200 = document.getElementById("edittotalCash200").value;
+        let totalCash100 = document.getElementById("edittotalCash100").value;
+        let totalCash50 = document.getElementById("edittotalCash50").value;
+        let totalCash20 = document.getElementById("edittotalCash20").value;
+        let totalCash10 = document.getElementById("edittotalCash10").value;
+        let totalCash5 = document.getElementById("edittotalCash5").value;
+        let totalCash2 = document.getElementById("edittotalCash2").value;
+        let totalCash1 = document.getElementById("edittotalCash1").value;
+
+        let result = Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
+        editDatas["totalCash"] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, ["totalCash"] : result})
+    }
+
+    function editcalculateDiffMSHSD(duOpenId, duCloseId, duResultId) {
+        let duOpen = document.getElementById(duOpenId).value;
+        let duClose = document.getElementById(duCloseId).value;
+        
+        let result = duClose - duOpen;
+        editDatas[duResultId] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, [duResultId] : result})
+    }
+
+    function editcalculateReadingCash(du1DiffId, du2DiffId, testingId, meterRateId, resultId) {
+        let du1Diff = parseFloat(editDatas[du1DiffId]) || 0;
+        let du2Diff = parseFloat(editDatas[du2DiffId]) || 0;
+        let testing = document.getElementById(testingId).value;
+        let meterRate = document.getElementById(meterRateId).value;
+
+        let result = ((Number(du1Diff) + Number(du2Diff)) - Number(testing)) * Number(meterRate);
+        editDatas[resultId] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, [resultId] : result});
+    }
+
+    function editcalculateTotalReadingCash(readingCashMSId, readingCashHSDId, resultId) {
+        let readingCashMS = parseFloat(editDatas[readingCashMSId]) || 0;
+        let readingCashHSD = parseFloat(editDatas[readingCashHSDId]) || 0;
+
+        let result = Number(readingCashMS) + Number(readingCashHSD);
+        editDatas[resultId] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, [resultId] : result});
+    }
+
+    function editcalculateStockClose(stockOpenId, testingId, du1Id, du2Id, resultId) {
+        let stockOpen = document.getElementById(stockOpenId).value;
+        let testing = document.getElementById(testingId).value;
+        let du1 = parseFloat(editDatas[du1Id]) || 0;
+        let du2 = parseFloat(editDatas[du2Id]) || 0;
+
+        let result = Number(stockOpen) - ((Number(du1) + Number(du2)) - Number(testing));
+        editDatas[resultId] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, [resultId] : result});
+    }
+
+    function editcalculateTotalShiftCollection() {
+        let totalPhonepe = document.getElementById("editphonePe").value;
+        let totalpos = document.getElementById("editpos").value;
+        let totalCash500 = document.getElementById("edittotalCash500").value;
+        let totalCash200 = document.getElementById("edittotalCash200").value;
+        let totalCash100 = document.getElementById("edittotalCash100").value;
+        let totalCash50 = document.getElementById("edittotalCash50").value;
+        let totalCash20 = document.getElementById("edittotalCash20").value;
+        let totalCash10 = document.getElementById("edittotalCash10").value;
+        let totalCash5 = document.getElementById("edittotalCash5").value;
+        let totalCash2 = document.getElementById("edittotalCash2").value;
+        let totalCash1 = document.getElementById("edittotalCash1").value;
+        // let newCreditElements = document.querySelectorAll("#newCredit")
+        // let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
+        //     return sum + Number(element.value || 0);
+        // }, 0);
+
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
+        editDatas["totalShiftCollection"] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, ["totalShiftCollection"] : result});
+    }
+
+    function editcalculateGrandTotal() {
+        let totalPhonepe = document.getElementById("editphonePe").value;
+        let totalpos = document.getElementById("editpos").value;
+        let totalCash500 = document.getElementById("edittotalCash500").value;
+        let totalCash200 = document.getElementById("edittotalCash200").value;
+        let totalCash100 = document.getElementById("edittotalCash100").value;
+        let totalCash50 = document.getElementById("edittotalCash50").value;
+        let totalCash20 = document.getElementById("edittotalCash20").value;
+        let totalCash10 = document.getElementById("edittotalCash10").value;
+        let totalCash5 = document.getElementById("edittotalCash5").value;
+        let totalCash2 = document.getElementById("edittotalCash2").value;
+        let totalCash1 = document.getElementById("edittotalCash1").value;
+        let newCreditElements = document.querySelectorAll("#editnewCredit")
+        let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
+            return sum + Number(element.value || 0);
+        }, 0);
+        let oldCreditElements = document.querySelectorAll("#editoldCredit")
+        let odlCreditSum = Array.from(oldCreditElements).reduce((sum, element) => {
+            return sum + Number(element.value || 0);
+        }, 0);
+
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum) + Number(odlCreditSum);
+        editDatas["grandTotal"] = parseFloat(result) || 0;
+        setEditDatas({...editDatas, ["grandTotal"] : result});
+    }
+    // edit
 
     const [oldRows, setOldRows] = useState([{}]);
     const [newRows, setNewRows] = useState([{}]);
@@ -272,6 +388,7 @@ const ShiftEntry = () => {
         if(response.data) {
             alert("Added Successfully...");
             window.location.reload();
+            props.showAlert("Added Successfully...", "success");
         }
         console.log(response.data);
     }
@@ -301,6 +418,7 @@ const ShiftEntry = () => {
         axios.put(`${backendApiUrl}shiftEntry/edit-shiftEntry`, editDatas);
         alert("Updated Successfully...");
         window.location.reload();
+        props.showAlert("Updated Successfully...", "success");
     }
 
     const handleDelete = async (e) => {
@@ -314,6 +432,7 @@ const ShiftEntry = () => {
               setIsError(error.message);
             })
         })
+        props.showAlert("Deleted Successfully...", "success");
     }
 
     const handleTabs = async (e) => {
@@ -489,7 +608,7 @@ const ShiftEntry = () => {
                                 <div className="col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="meterRateMS" className="form-label">Meter Rate*</label>
-                                        <input type="text" className="form-control" name="meterRateMS" id="meterRateMS" value={credentials.meterRateMS} onChange={onChange} onInput={() => {calculateReadingCash("du1DiffMS", "du2DiffMS", "testingMS", "meterRateMS", "readingCashMS"); calculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
+                                        <input type="text" className="form-control" name="meterRateMS" id="meterRateMS" value={credentials.meterRateMS} onChange={onChange} onInput={() => {calculateReadingCash("du1DiffMS", "du2DiffMS", "testingMS", "meterRateMS", "readingCashMS"), calculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
                                     </div>
                                 </div>
                                 <div className="col-md-6">
@@ -607,7 +726,6 @@ const ShiftEntry = () => {
                         <div className="col-md-5">
                             <div className="mb-3">
                                 <label htmlFor="cash" className="form-label">Cash</label> <br />
-                                2000 * <input type="number" className='my-1' name="cash2000" id="cash2000" onInput={() => {calculateResult(2000, "cash2000", "totalCash2000"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash2000" id="totalCash2000" disabled /> <br />
                                 500 &nbsp; * <input type="number" className='my-1' name="cash500" id="cash500" onInput={() => {calculateResult(500, "cash500", "totalCash500"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash500" id="totalCash500" disabled /> <br />
                                 200 &nbsp; * <input type="number" className='my-1' name="cash200" id="cash200" onInput={() => {calculateResult(200, "cash200", "totalCash200"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash200" id="totalCash200" disabled /> <br />
                                 100 &nbsp; * <input type="number" className='my-1' name="cash100" id="cash100" onInput={() => {calculateResult(100, "cash100", "totalCash100"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash100" id="totalCash100" disabled /> <br />
@@ -656,7 +774,7 @@ const ShiftEntry = () => {
                     {newRows.map((row, index) => (
                         <div key={index} className="input-group my-2">
                             <span className="input-group-text">New Credit</span>
-                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="newCredit" value={credentials.shiftEntryList[index]?.newCredit || ''} onChange={(e) => onChange(e, index)} onInput={()=> {calculateTotalShiftCollection(), calculateGrandTotal()}} />
+                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="newCredit" value={credentials.shiftEntryList[index]?.newCredit || ''} onChange={(e) => onChange(e, index)} onInput={()=> {calculateGrandTotal()}} />
                             <input type="text" placeholder="Borrower's Name" className="form-control" name="borrowerName" id="borrowerName" value={credentials.shiftEntryList[index]?.borrowerName || ''} onChange={(e) => onChange(e, index)} />
                             <input type="text" placeholder="Borrower's Mobile No." className="form-control" name="borrowerMobileNo" id="borrowerMobileNo" value={credentials.shiftEntryList[index]?.borrowerMobileNo || ''} onChange={(e) => onChange(e, index)} />
                             <button onClick={() => deleteNewRow(index)} className='btn btn-outline-dark'><i className="bi bi-x"></i></button>
@@ -719,6 +837,7 @@ const ShiftEntry = () => {
                             <th scope="col">HSD Reading Cash</th>
                             <th scope="col">Total Reading Cash</th>
                             <th scope="col">Total Shift Collection</th>
+                            <th scope="col">Grand Total</th>
                             <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -748,6 +867,7 @@ const ShiftEntry = () => {
                                         <td>{myData.readingCashHSD}</td>
                                         <td>{myData.readingCash}</td>
                                         <td>{myData.totalShiftCollection}</td>
+                                        <td>{myData.grandTotal}</td>
                                         <td>
                                         <button type="button" className="btn btn-outline-dark my-1" data-bs-toggle="modal" data-bs-target="#viewModal" title='View' onClick={() => handleEditData(myData.id)}>
                                             <i className="bi bi-eye-fill"></i>
@@ -1000,7 +1120,6 @@ const ShiftEntry = () => {
                                                         <div className="col-md-5">
                                                             <div className="mb-3">
                                                                 <label htmlFor="cash" className="form-label">Cash</label> <br />
-                                                                2000 * <input type="number" className='my-1' name="cash2000" id="cash2000"  readOnly/> = <input type="text" name="totalCash2000" id="totalCash2000" disabled /> <br />
                                                                 500 &nbsp; * <input type="number" className='my-1' name="cash500" id="cash500"  readOnly/> = <input type="text" name="totalCash500" id="totalCash500" disabled /> <br />
                                                                 200 &nbsp; * <input type="number" className='my-1' name="cash200" id="cash200"  readOnly/> = <input type="text" name="totalCash200" id="totalCash200" disabled /> <br />
                                                                 100 &nbsp; * <input type="number" className='my-1' name="cash100" id="cash100"  readOnly/> = <input type="text" name="totalCash100" id="totalCash100" disabled /> <br />
@@ -1079,13 +1198,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="inDate" className="form-label">In Date*</label>
-                                                                        <input type="date" className="form-control" name="inDate" id="inDate" value={editDatas.inDate} onChange={onEditChange} required/>
+                                                                        <input type="date" className="form-control" name="inDate" id="editinDate" value={editDatas.inDate} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="inTime" className="form-label">In Time*</label>
-                                                                        <input type="time" className="form-control" name="inTime" id="inTime" value={editDatas.inTime} onChange={onEditChange} required/>
+                                                                        <input type="time" className="form-control" name="inTime" id="editinTime" value={editDatas.inTime} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1095,13 +1214,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="outDate" className="form-label">Out Date*</label>
-                                                                        <input type="date" className="form-control" name="outDate" id="outDate" value={editDatas.outDate} onChange={onEditChange} required/>
+                                                                        <input type="date" className="form-control" name="outDate" id="editoutDate" value={editDatas.outDate} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="outTime" className="form-label">Out Time*</label>
-                                                                        <input type="time" className="form-control" name="outTime" id="outTime" value={editDatas.outTime} onChange={onEditChange} required/>
+                                                                        <input type="time" className="form-control" name="outTime" id="editoutTime" value={editDatas.outTime} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1111,7 +1230,7 @@ const ShiftEntry = () => {
                                                         <div className="col-md-4">
                                                             <div className="mb-3">
                                                                 <label htmlFor="name" className="form-label">Name*</label>
-                                                                <input type="text" className="form-control" name="name" id="name" value={editDatas.name} onChange={onEditChange} required/>
+                                                                <input type="text" className="form-control" name="name" id="editname" value={editDatas.name} onChange={onEditChange} required/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1123,7 +1242,7 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="stockOpenMS" className="form-label">Stock Open*</label>
-                                                                        <input type="text" className="form-control" name="stockOpenMS" id="stockOpenMS" value={editDatas.stockOpenMS} onChange={onEditChange} required/>
+                                                                        <input type="text" className="form-control" name="stockOpenMS" id="editstockOpenMS" value={editDatas.stockOpenMS} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
@@ -1137,13 +1256,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="testingMS" className="form-label">Testing</label>
-                                                                        <input type="text" className="form-control" name="testingMS" id="testingMS" value={editDatas.testingMS} onChange={onEditChange} />
+                                                                        <input type="text" className="form-control" name="testingMS" id="edittestingMS" value={editDatas.testingMS} onChange={onEditChange} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="densityMS" className="form-label">Density</label>
-                                                                        <input type="text" className="form-control" name="densityMS" id="densityMS" value={editDatas.densityMS} onChange={onEditChange} />
+                                                                        <input type="text" className="form-control" name="densityMS" id="editdensityMS" value={editDatas.densityMS} onChange={onEditChange} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1151,13 +1270,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du1OpenMS" className="form-label">DU 1 Open*</label>
-                                                                        <input type="text" className="form-control" name="du1OpenMS" id="du1OpenMS" value={editDatas.du1OpenMS} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du1OpenMS", "du1CloseMS", "du1DiffMS"), calculateStockClose("stockOpenMS", "testingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
+                                                                        <input type="text" className="form-control" name="du1OpenMS" id="editdu1OpenMS" value={editDatas.du1OpenMS} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu1OpenMS", "editdu1CloseMS", "du1DiffMS"), editcalculateStockClose("editstockOpenMS", "edittestingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du1CloseMS" className="form-label">DU 1 Close*</label>
-                                                                        <input type="text" className="form-control" name="du1CloseMS" id="du1CloseMS" value={editDatas.du1CloseMS} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du1OpenMS", "du1CloseMS", "du1DiffMS"), calculateStockClose("stockOpenMS", "testingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
+                                                                        <input type="text" className="form-control" name="du1CloseMS" id="editdu1CloseMS" value={editDatas.du1CloseMS} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu1OpenMS", "editdu1CloseMS", "du1DiffMS"), editcalculateStockClose("editstockOpenMS", "edittestingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1165,13 +1284,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du2OpenMS" className="form-label">DU 2 Open*</label>
-                                                                        <input type="text" className="form-control" name="du2OpenMS" id="du2OpenMS" value={editDatas.du2OpenMS} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du2OpenMS", "du2CloseMS", "du2DiffMS"), calculateStockClose("stockOpenMS", "testingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
+                                                                        <input type="text" className="form-control" name="du2OpenMS" id="editdu2OpenMS" value={editDatas.du2OpenMS} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu2OpenMS", "editdu2CloseMS", "du2DiffMS"), editcalculateStockClose("editstockOpenMS", "edittestingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du2CloseMS" className="form-label">DU 2 Close*</label>
-                                                                        <input type="text" className="form-control" name="du2CloseMS" id="du2CloseMS" value={editDatas.du2CloseMS} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du2OpenMS", "du2CloseMS", "du2DiffMS"), calculateStockClose("stockOpenMS", "testingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
+                                                                        <input type="text" className="form-control" name="du2CloseMS" id="editdu2CloseMS" value={editDatas.du2CloseMS} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu2OpenMS", "editdu2CloseMS", "du2DiffMS"), editcalculateStockClose("editstockOpenMS", "edittestingMS", "du1DiffMS", "du2DiffMS", "stockCloseMS")}} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1193,7 +1312,7 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="meterRateMS" className="form-label">Meter Rate*</label>
-                                                                        <input type="text" className="form-control" name="meterRateMS" id="meterRateMS" value={editDatas.meterRateMS} onChange={onEditChange} onInput={() => {calculateReadingCash("du1DiffMS", "du2DiffMS", "testingMS", "meterRateMS", "readingCashMS"); calculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
+                                                                        <input type="text" className="form-control" name="meterRateMS" id="editmeterRateMS" value={editDatas.meterRateMS} onChange={onEditChange} onInput={() => {editcalculateReadingCash("du1DiffMS", "du2DiffMS", "edittestingMS", "editmeterRateMS", "readingCashMS"), editcalculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
@@ -1210,7 +1329,7 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="stockOpenHSD" className="form-label">Stock Open*</label>
-                                                                        <input type="text" className="form-control" name="stockOpenHSD" id="stockOpenHSD" value={editDatas.stockOpenHSD} onChange={onEditChange} required/>
+                                                                        <input type="text" className="form-control" name="stockOpenHSD" id="editstockOpenHSD" value={editDatas.stockOpenHSD} onChange={onEditChange} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
@@ -1224,13 +1343,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="testingHSD" className="form-label">Testing</label>
-                                                                        <input type="text" className="form-control" name="testingHSD" id="testingHSD" value={editDatas.testingHSD} onChange={onEditChange} />
+                                                                        <input type="text" className="form-control" name="testingHSD" id="edittestingHSD" value={editDatas.testingHSD} onChange={onEditChange} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="densityHSD" className="form-label">Density</label>
-                                                                        <input type="text" className="form-control" name="densityHSD" id="densityHSD" value={editDatas.densityHSD} onChange={onEditChange} />
+                                                                        <input type="text" className="form-control" name="densityHSD" id="editdensityHSD" value={editDatas.densityHSD} onChange={onEditChange} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1238,13 +1357,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du1OpenHSD" className="form-label">DU 1 Open*</label>
-                                                                        <input type="text" className="form-control" name="du1OpenHSD" id="du1OpenHSD" value={editDatas.du1OpenHSD} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du1OpenHSD", "du1CloseHSD", "du1DiffHSD"), calculateStockClose("stockOpenHSD", "testingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
+                                                                        <input type="text" className="form-control" name="du1OpenHSD" id="editdu1OpenHSD" value={editDatas.du1OpenHSD} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu1OpenHSD", "editdu1CloseHSD", "du1DiffHSD"), editcalculateStockClose("editstockOpenHSD", "edittestingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du1CloseHSD" className="form-label">DU 1 Close*</label>
-                                                                        <input type="text" className="form-control" name="du1CloseHSD" id="du1CloseHSD" value={editDatas.du1CloseHSD} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du1OpenHSD", "du1CloseHSD", "du1DiffHSD"), calculateStockClose("stockOpenHSD", "testingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
+                                                                        <input type="text" className="form-control" name="du1CloseHSD" id="editdu1CloseHSD" value={editDatas.du1CloseHSD} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu1OpenHSD", "editdu1CloseHSD", "du1DiffHSD"), editcalculateStockClose("editstockOpenHSD", "edittestingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1252,13 +1371,13 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du2OpenHSD" className="form-label">DU 2 Open*</label>
-                                                                        <input type="text" className="form-control" name="du2OpenHSD" id="du2OpenHSD" value={editDatas.du2OpenHSD} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du2OpenHSD", "du2CloseHSD", "du2DiffHSD"), calculateStockClose("stockOpenHSD", "testingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
+                                                                        <input type="text" className="form-control" name="du2OpenHSD" id="editdu2OpenHSD" value={editDatas.du2OpenHSD} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu2OpenHSD", "editdu2CloseHSD", "du2DiffHSD"), editcalculateStockClose("editstockOpenHSD", "edittestingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="du2CloseHSD" className="form-label">DU 2 Close*</label>
-                                                                        <input type="text" className="form-control" name="du2CloseHSD" id="du2CloseHSD" value={editDatas.du2CloseHSD} onChange={onEditChange} onInput={() => {calculateDiffMSHSD("du2OpenHSD", "du2CloseHSD", "du2DiffHSD"), calculateStockClose("stockOpenHSD", "testingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
+                                                                        <input type="text" className="form-control" name="du2CloseHSD" id="editdu2CloseHSD" value={editDatas.du2CloseHSD} onChange={onEditChange} onInput={() => {editcalculateDiffMSHSD("editdu2OpenHSD", "editdu2CloseHSD", "du2DiffHSD"), editcalculateStockClose("editstockOpenHSD", "edittestingHSD", "du1DiffHSD", "du2DiffHSD", "stockCloseHSD")}} required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1280,7 +1399,7 @@ const ShiftEntry = () => {
                                                                 <div className="col-md-6">
                                                                     <div className="mb-3">
                                                                         <label htmlFor="meterRateHSD" className="form-label">Meter Rate*</label>
-                                                                        <input type="text" className="form-control" name="meterRateHSD" id="meterRateHSD" value={editDatas.meterRateHSD} onChange={onEditChange} onInput={() => {calculateReadingCash("du1DiffHSD", "du2DiffHSD", "testingHSD", "meterRateHSD", "readingCashHSD"); calculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
+                                                                        <input type="text" className="form-control" name="meterRateHSD" id="editmeterRateHSD" value={editDatas.meterRateHSD} onChange={onEditChange} onInput={() => {editcalculateReadingCash("du1DiffHSD", "du2DiffHSD", "edittestingHSD", "editmeterRateHSD", "readingCashHSD"), editcalculateTotalReadingCash("readingCashMS", "readingCashHSD", "readingCash")}} required/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-6">
@@ -1297,36 +1416,35 @@ const ShiftEntry = () => {
                                                         <div className="col-md-4">
                                                             <div className="mb-3">
                                                                 <label htmlFor="phonePe" className="form-label">Phonepe</label>
-                                                                <input type="text" className="form-control" name="phonePe" id="phonePe" value={editDatas.phonePe} onChange={onEditChange} onInput={() => {calculateTotalShiftCollection(), calculateGrandTotal()}} />
+                                                                <input type="text" className="form-control" name="phonePe" id="editphonePe" value={editDatas.phonePe} onChange={onEditChange} onInput={() => {editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} />
                                                             </div>
                                                             <div className="mb-3">
                                                                 <label htmlFor="pos" className="form-label">POS</label>
-                                                                <input type="text" className="form-control" name="pos" id="pos" value={editDatas.pos} onChange={onEditChange} onInput={() => {calculateTotalShiftCollection(), calculateGrandTotal()}}/>
+                                                                <input type="text" className="form-control" name="pos" id="editpos" value={editDatas.pos} onChange={onEditChange} onInput={() => {editcalculateTotalShiftCollection(), editcalculateGrandTotal()}}/>
                                                             </div>
                                                             <div className="mb-3">
                                                                 <label htmlFor="remark" className="form-label">Remark</label>
-                                                                <input type="text" className="form-control" name="remark" id="remark" value={editDatas.remark} onChange={onEditChange} />
+                                                                <input type="text" className="form-control" name="remark" id="editremark" value={editDatas.remark} onChange={onEditChange} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-5">
                                                             <div className="mb-3">
                                                                 <label htmlFor="cash" className="form-label">Cash</label> <br />
-                                                                2000 * <input type="number" className='my-1' name="cash2000" id="cash2000" onInput={() => {calculateResult(2000, "cash2000", "totalCash2000"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash2000" id="totalCash2000" disabled /> <br />
-                                                                500 &nbsp; * <input type="number" className='my-1' name="cash500" id="cash500" onInput={() => {calculateResult(500, "cash500", "totalCash500"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash500" id="totalCash500" disabled /> <br />
-                                                                200 &nbsp; * <input type="number" className='my-1' name="cash200" id="cash200" onInput={() => {calculateResult(200, "cash200", "totalCash200"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash200" id="totalCash200" disabled /> <br />
-                                                                100 &nbsp; * <input type="number" className='my-1' name="cash100" id="cash100" onInput={() => {calculateResult(100, "cash100", "totalCash100"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash100" id="totalCash100" disabled /> <br />
-                                                                50 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash50" id="cash50" onInput={() => {calculateResult(50, "cash50", "totalCash50"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash50" id="totalCash50" disabled /> <br />
-                                                                20 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash20" id="cash20" onInput={() => {calculateResult(20, "cash20", "totalCash20"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash20" id="totalCash20" disabled /> <br />
-                                                                10 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash10" id="cash10" onInput={() => {calculateResult(10, "cash10", "totalCash10"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash10" id="totalCash10" disabled /> <br />
-                                                                5 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash5" id="cash5" onInput={() => {calculateResult(5, "cash5", "totalCash5"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash5" id="totalCash5" disabled /> <br />
-                                                                2 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash2" id="cash2" onInput={() => {calculateResult(2, "cash2", "totalCash2"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash2" id="totalCash2" disabled /> <br />
-                                                                1 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash1" id="cash1" onInput={() => {calculateResult(1, "cash1", "totalCash1"), calculateTotalShiftCollection(), calculateGrandTotal()}} /> = <input type="text" name="totalCash1" id="totalCash1" disabled /> <br />
+                                                                500 &nbsp; * <input type="number" className='my-1' name="cash500" id="editcash500" onInput={() => {editcalculateResult(500, "editcash500", "edittotalCash500"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash500" id="edittotalCash500" disabled /> <br />
+                                                                200 &nbsp; * <input type="number" className='my-1' name="cash200" id="editcash200" onInput={() => {editcalculateResult(200, "editcash200", "edittotalCash200"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash200" id="edittotalCash200" disabled /> <br />
+                                                                100 &nbsp; * <input type="number" className='my-1' name="cash100" id="editcash100" onInput={() => {editcalculateResult(100, "editcash100", "edittotalCash100"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash100" id="edittotalCash100" disabled /> <br />
+                                                                50 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash50" id="editcash50" onInput={() => {editcalculateResult(50, "editcash50", "edittotalCash50"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash50" id="edittotalCash50" disabled /> <br />
+                                                                20 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash20" id="editcash20" onInput={() => {editcalculateResult(20, "editcash20", "edittotalCash20"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash20" id="edittotalCash20" disabled /> <br />
+                                                                10 &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash10" id="editcash10" onInput={() => {editcalculateResult(10, "editcash10", "edittotalCash10"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash10" id="edittotalCash10" disabled /> <br />
+                                                                5 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash5" id="editcash5" onInput={() => {editcalculateResult(5, "editcash5", "edittotalCash5"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash5" id="edittotalCash5" disabled /> <br />
+                                                                2 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash2" id="editcash2" onInput={() => {editcalculateResult(2, "editcash2", "edittotalCash2"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash2" id="edittotalCash2" disabled /> <br />
+                                                                1 &nbsp; &nbsp; &nbsp;  * <input type="number" className='my-1' name="cash1" id="editcash1" onInput={() => {editcalculateResult(1, "editcash1", "edittotalCash1"), editcalculateTotalShiftCollection(), editcalculateGrandTotal()}} /> = <input type="text" name="totalCash1" id="edittotalCash1" disabled /> <br />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="mb-3">
                                                                 <label htmlFor="totalCash" className="form-label">Total Cash</label>
-                                                                <input type="text" className="form-control" name="totalCash" id="totalCash" value={editDatas.totalCash} onChange={onEditChange} disabled/>
+                                                                <input type="text" className="form-control" name="totalCash" id="edittotalCash" value={editDatas.totalCash} onChange={onEditChange} disabled/>
                                                             </div>
                                                             <div className="mb-3">
                                                                 <label htmlFor="readingCash" className="form-label">Total Reading Cash</label>
@@ -1334,11 +1452,11 @@ const ShiftEntry = () => {
                                                             </div>
                                                             <div className="mb-3">
                                                                 <label htmlFor="totalShiftCollection" className="form-label">Total Shift Collection</label>
-                                                                <input type="text" className="form-control" name="totalShiftCollection" id="totalShiftCollection" value={editDatas.totalShiftCollection} onChange={onEditChange} disabled/>
+                                                                <input type="text" className="form-control" name="totalShiftCollection" id="edittotalShiftCollection" value={editDatas.totalShiftCollection} onChange={onEditChange} disabled/>
                                                             </div>
                                                             <div className="mb-3">
                                                                 <label htmlFor="grandTotal" className="form-label">Grand Total</label>
-                                                                <input type="text" className="form-control" name="grandTotal" id="grandTotal" value={editDatas.grandTotal} onChange={onEditChange} disabled/>
+                                                                <input type="text" className="form-control" name="grandTotal" id="editgrandTotal" value={editDatas.grandTotal} onChange={onEditChange} disabled/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1348,9 +1466,9 @@ const ShiftEntry = () => {
                                                     {oldRows.map((row, index) => (
                                                         <div key={index} className="input-group my-2">
                                                         <span className="input-group-text">Old Collection</span>
-                                                        <input type="text" placeholder="Old Credit/Loan Amount" className="form-control" name="oldCredit" id="oldCredit" value={editDatas?.shiftEntryList?.[index]?.oldCredit || ''} onChange={(e) => onEditChange(e, index)} />
-                                                        <input type="text" placeholder="Old Cash Collection Name" className="form-control" name="oldCollectionName" id="oldCollectionName" value={editDatas?.shiftEntryList?.[index]?.oldCollectionName || ''} onChange={(e) => onEditChange(e, index)} onInput={() => calculateGrandTotal()} />
-                                                        <input type="date" placeholder="Old Cash Collection Date" className="form-control" name="oldDate" id="oldDate" value={editDatas?.shiftEntryList?.[index]?.oldDate == '0000-00-00' ? "" : editDatas?.shiftEntryList?.[index]?.oldDate} onChange={(e) => onEditChange(e, index)} />
+                                                        <input type="text" placeholder="Old Credit/Loan Amount" className="form-control" name="oldCredit" id="editoldCredit" value={editDatas?.shiftEntryList?.[index]?.oldCredit || ''} onChange={(e) => onEditChange(e, index)} />
+                                                        <input type="text" placeholder="Old Cash Collection Name" className="form-control" name="oldCollectionName" id="editoldCollectionName" value={editDatas?.shiftEntryList?.[index]?.oldCollectionName || ''} onChange={(e) => onEditChange(e, index)} onInput={() => editcalculateGrandTotal()} />
+                                                        <input type="date" placeholder="Old Cash Collection Date" className="form-control" name="oldDate" id="editoldDate" value={editDatas?.shiftEntryList?.[index]?.oldDate == '0000-00-00' ? "" : editDatas?.shiftEntryList?.[index]?.oldDate} onChange={(e) => onEditChange(e, index)} />
                                                         <button onClick={() => deleteOldRow(index)} className='btn btn-outline-dark'><i className="bi bi-x"></i></button>
                                                         </div>
                                                     ))}
@@ -1360,9 +1478,9 @@ const ShiftEntry = () => {
                                                     {newRows.map((row, index) => (
                                                         <div key={index} className="input-group my-2">
                                                             <span className="input-group-text">New Credit</span>
-                                                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="newCredit" value={editDatas?.shiftEntryList?.[index]?.newCredit || ''} onChange={(e) => onEditChange(e, index)} onInput={()=> {calculateTotalShiftCollection(), calculateGrandTotal()}} />
-                                                            <input type="text" placeholder="Borrower's Name" className="form-control" name="borrowerName" id="borrowerName" value={editDatas?.shiftEntryList?.[index]?.borrowerName || ''} onChange={(e) => onEditChange(e, index)} />
-                                                            <input type="text" placeholder="Borrower's Mobile No." className="form-control" name="borrowerMobileNo" id="borrowerMobileNo" value={editDatas?.shiftEntryList?.[index]?.borrowerMobileNo || ''} onChange={(e) => onEditChange(e, index)} />
+                                                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="editnewCredit" value={editDatas?.shiftEntryList?.[index]?.newCredit || ''} onChange={(e) => onEditChange(e, index)} onInput={()=> {editcalculateGrandTotal()}} />
+                                                            <input type="text" placeholder="Borrower's Name" className="form-control" name="borrowerName" id="editborrowerName" value={editDatas?.shiftEntryList?.[index]?.borrowerName || ''} onChange={(e) => onEditChange(e, index)} />
+                                                            <input type="text" placeholder="Borrower's Mobile No." className="form-control" name="borrowerMobileNo" id="editborrowerMobileNo" value={editDatas?.shiftEntryList?.[index]?.borrowerMobileNo || ''} onChange={(e) => onEditChange(e, index)} />
                                                             <button onClick={() => deleteNewRow(index)} className='btn btn-outline-dark'><i className="bi bi-x"></i></button>
                                                         </div>
                                                     ))}
@@ -1382,6 +1500,7 @@ const ShiftEntry = () => {
                             }) : 
                             <tr>
                                 <th scope="row"></th>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
