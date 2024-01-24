@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { backendApiUrl } from '../config/config';
 import { Link } from 'react-router-dom';
-import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 
 const ShiftEntry = (props) => {
     const data = {
@@ -199,12 +199,12 @@ const ShiftEntry = (props) => {
         let totalCash5 = document.getElementById("totalCash5").value;
         let totalCash2 = document.getElementById("totalCash2").value;
         let totalCash1 = document.getElementById("totalCash1").value;
-        // let newCreditElements = document.querySelectorAll("#newCredit")
-        // let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
-        //     return sum + Number(element.value || 0);
-        // }, 0);
+        let newCreditElements = document.querySelectorAll("#newCredit")
+        let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
+            return sum + Number(element.value || 0);
+        }, 0);
 
-        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum);
         credentials["totalShiftCollection"] = parseFloat(result) || 0;
         setCredentials({...credentials, ["totalShiftCollection"] : result});
     }
@@ -316,12 +316,12 @@ const ShiftEntry = (props) => {
         let totalCash5 = document.getElementById("edittotalCash5").value;
         let totalCash2 = document.getElementById("edittotalCash2").value;
         let totalCash1 = document.getElementById("edittotalCash1").value;
-        // let newCreditElements = document.querySelectorAll("#newCredit")
-        // let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
-        //     return sum + Number(element.value || 0);
-        // }, 0);
+        let newCreditElements = document.querySelectorAll("#newCredit")
+        let newCreditSum = Array.from(newCreditElements).reduce((sum, element) => {
+            return sum + Number(element.value || 0);
+        }, 0);
 
-        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1);
+        let result = Number(totalPhonepe) + Number(totalpos) + Number(totalCash500) + Number(totalCash200) + Number(totalCash100) + Number(totalCash50) + Number(totalCash20) + Number(totalCash10) + Number(totalCash5) + Number(totalCash2) + Number(totalCash1) + Number(newCreditSum);
         editDatas["totalShiftCollection"] = parseFloat(result) || 0;
         setEditDatas({...editDatas, ["totalShiftCollection"] : result});
     }
@@ -774,7 +774,7 @@ const ShiftEntry = (props) => {
                     {newRows.map((row, index) => (
                         <div key={index} className="input-group my-2">
                             <span className="input-group-text">New Credit</span>
-                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="newCredit" value={credentials.shiftEntryList[index]?.newCredit || ''} onChange={(e) => onChange(e, index)} onInput={()=> {calculateGrandTotal()}} />
+                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="newCredit" value={credentials.shiftEntryList[index]?.newCredit || ''} onChange={(e) => onChange(e, index)} onInput={()=> {calculateTotalShiftCollection(), calculateGrandTotal()}} />
                             <input type="text" placeholder="Borrower's Name" className="form-control" name="borrowerName" id="borrowerName" value={credentials.shiftEntryList[index]?.borrowerName || ''} onChange={(e) => onChange(e, index)} />
                             <input type="text" placeholder="Borrower's Mobile No." className="form-control" name="borrowerMobileNo" id="borrowerMobileNo" value={credentials.shiftEntryList[index]?.borrowerMobileNo || ''} onChange={(e) => onChange(e, index)} />
                             <button onClick={() => deleteNewRow(index)} className='btn btn-outline-dark'><i className="bi bi-x"></i></button>
@@ -811,7 +811,7 @@ const ShiftEntry = (props) => {
                     <div className="col-md-4">
                     </div>
                 </div>
-            <div className="table-responsive TH">
+                <div className="table-responsive TH">
                     <table className="table table-striped table-bordered border-dark my-4">
                         <thead>
                             <tr>
@@ -1478,7 +1478,7 @@ const ShiftEntry = (props) => {
                                                     {newRows.map((row, index) => (
                                                         <div key={index} className="input-group my-2">
                                                             <span className="input-group-text">New Credit</span>
-                                                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="editnewCredit" value={editDatas?.shiftEntryList?.[index]?.newCredit || ''} onChange={(e) => onEditChange(e, index)} onInput={()=> {editcalculateGrandTotal()}} />
+                                                            <input type="text" placeholder="Today's Credit/Loan Amount" className="form-control" name="newCredit" id="editnewCredit" value={editDatas?.shiftEntryList?.[index]?.newCredit || ''} onChange={(e) => onEditChange(e, index)} onInput={()=> {editcalculateTotalShiftCollection() ,editcalculateGrandTotal()}} />
                                                             <input type="text" placeholder="Borrower's Name" className="form-control" name="borrowerName" id="editborrowerName" value={editDatas?.shiftEntryList?.[index]?.borrowerName || ''} onChange={(e) => onEditChange(e, index)} />
                                                             <input type="text" placeholder="Borrower's Mobile No." className="form-control" name="borrowerMobileNo" id="editborrowerMobileNo" value={editDatas?.shiftEntryList?.[index]?.borrowerMobileNo || ''} onChange={(e) => onEditChange(e, index)} />
                                                             <button onClick={() => deleteNewRow(index)} className='btn btn-outline-dark'><i className="bi bi-x"></i></button>
@@ -1529,7 +1529,99 @@ const ShiftEntry = (props) => {
                     </table>
                 </div>
             </div>
-        </div> : "" }
+        </div> : 
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-md-4">
+                    <div className="row">
+                        <div className="col-md-5">
+                            <label htmlFor="fromDate" className="form-label"><u>From Date</u></label>
+                            <input type="date" className="form-control" name="fromDate" id="fromDate" value={searchCredentials.fromDate} onChange={onChange} />
+                        </div>
+                        <div className="col-md-5">
+                            <label htmlFor="toDate" className="form-label"><u>To Date</u></label>
+                            <input type="date" className="form-control" name="toDate" id="toDate" value={searchCredentials.toDate} onChange={onChange} />
+                        </div>
+                        <div className="col-md-2">
+                            <label htmlFor="search"></label>
+                            <input className="btn btn-outline-dark my-2" type="submit" value="Search" onClick={handleSearchSubmit} />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                </div>
+                <div className="col-md-4">
+                </div>
+            </div>
+            <div className="table-responsive TH">
+                <table className="table table-striped table-bordered border-dark my-4">
+                    <thead>
+                        <tr>
+                        <th scope="col">S.no</th>
+                        <th scope="col">In Date/Time</th>
+                        <th scope="col">Out Date/Time</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone Pe</th>
+                        <th scope="col">POS</th>
+                        <th scope="col">Total Cash</th>
+                        <th scope="col">Total Reading Cash</th>
+                        <th scope="col">Old Collection</th>
+                        <th scope="col">New Credit</th>
+                        <th scope="col">Total Shift Collection</th>
+                        <th scope="col">Grand Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {myDatas.length > 0 ? myDatas.map((myData, index) => {
+                            return (
+                                <tr key={index}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{myData.inDate} / {myData.inTime}</td>
+                                    <td>{myData.outDate} / {myData.outTime}</td>
+                                    <td>{myData.name}</td>
+                                    <td>{myData.phonePe}</td>
+                                    <td>{myData.pos}</td>
+                                    <td>{myData.totalCash}</td>
+                                    <td>{myData.readingCash}</td>
+                                    <td>{myData.shiftEntryList[0].oldCredit}</td>
+                                    <td>{myData.shiftEntryList[0].newCredit}</td>
+                                    <td>{myData.totalShiftCollection}</td>
+                                    <td>{myData.grandTotal}</td>
+                                </tr>
+                            )
+                        }) : 
+                        <tr>
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+        }
     </div> : ""
 
 

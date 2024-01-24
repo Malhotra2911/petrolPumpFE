@@ -103,10 +103,21 @@ const MeterReadingDiesel = (props) => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    axios.put(`${backendApiUrl}meter/edit-meterReadingDiesel`, editDatas);
-    alert("Updated Successfully...");
-    window.location.reload();
-    props.showAlert("Updated Successfully...", "success");
+    const DensityAsFloat = parseFloat(editDatas.Density)
+    const DipAsFloat = parseFloat(editDatas.Dip)
+    const WaterDipAsFloat = parseFloat(editDatas.WaterDip)
+    const StockAsFloat = parseFloat(editDatas.Stock)
+    const ReceiptAsFloat = parseFloat(editDatas.Receipt)
+    const TestingAsFloat = parseFloat(editDatas.Testing)
+    const Nozzle1AsFloat = parseFloat(editDatas.Nozzle1)
+    const Nozzle2AsFloat = parseFloat(editDatas.Nozzle2)
+    const updatedCredentials = {...editDatas, Density: DensityAsFloat, Dip: DipAsFloat, WaterDip: WaterDipAsFloat, Stock: StockAsFloat, Receipt: ReceiptAsFloat, Testing: TestingAsFloat, Nozzle1: Nozzle1AsFloat, Nozzle2: Nozzle2AsFloat}
+    const response = await axios.put(`${backendApiUrl}meter/edit-meterReadingDiesel`, updatedCredentials);
+    if(response.data) {    
+        alert("Updated Successfully...");
+        window.location.reload();
+        props.showAlert("Updated Successfully...", "success");
+    }
   }
 
   const handleDelete = async (e) => {
@@ -275,7 +286,7 @@ const MeterReadingDiesel = (props) => {
                                     <input type="text" className="form-control" name="ttNo" id="ttNo" />
                                 </div>
                                 <div className="col-md-3">
-                                    <label htmlFor="" className="form-label">TT Load (KL)</label> <br />
+                                    <label htmlFor="" className="form-label">TT Load (L)</label> <br />
                                     <div className="row">
                                         <div className="col-md-4">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='MS' disabled /> 
@@ -343,12 +354,12 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-4">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" />
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' />
                                         </div>
                                         <div className="col-md-4">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Remark' /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Remark' /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -500,22 +511,33 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                         </div>
+                                        <label htmlFor="" className="form-label"><u>SALE TESTING</u></label> <br />
+                                        <div className="col-md-3">
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='MS' disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
+                                        </div>
+                                        <div className="col-md-3">
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id=""  />
+                                        </div>
                                     </div>                                    
                                 </div>
                                 <div className="col-md-1">
                                 </div>
                                 <div className="col-md-5">
-                                    <label htmlFor="" className="form-label"><u>PREVIOUS TANK LOADING AFTER REPORT</u></label> <br />
+                                    <label htmlFor="" className="form-label"><u>TT SALES REPORT</u></label> <br />
                                     <div className="row">
                                         <div className="col-md-5">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='PRODUCT' disabled /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU1 SALE' disabled /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU2 SALE' disabled />
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='TOTAL SALE' disabled />
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='SALE' disabled />
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='STOCK' disabled />
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='MS' disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
@@ -527,8 +549,21 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
                                         </div>
                                     </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="row">
+                                        <div className="col-md-8">
+                                            <label htmlFor="" className="form-label">Remark</label>
+                                            <input type="text" className="form-control" name="" id="" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
