@@ -135,9 +135,14 @@ const MeterReadingDiesel = (props) => {
   }
 
   const handleInput = async (e) => {
-    axios.get(`${backendApiUrl}meter/get-stockFromDip?dip=${document.getElementById("Dip").value}`)
+    let Dip = document.getElementById("Dip").value;
+    axios.get(`${backendApiUrl}meter/get-stockFromDip?dip=${Dip}`)
     .then((res) => {
-        document.getElementById("Stock").value = res?.data?.data?.Stock
+        // document.getElementById("Stock").value = res?.data?.data?.Stock
+        let result = res?.data?.data?.Stock;
+        credentials["Stock"] = parseFloat(result) || 0;
+        credentials["Dip"] = parseFloat(Dip) || 0;
+        setCredentials({...credentials, ["Stock"] : result, ["Dip"] : Dip})
     })
     .catch((error) => {
         setIsError(error.message);
@@ -176,7 +181,7 @@ const MeterReadingDiesel = (props) => {
                         <div className="row">
                             <div className="col-md-6">
                                 <label htmlFor="Date" className="form-label">Date</label>
-                                <input type="date" className="form-control" name="Date" id="Date" value={credentials.Date} onChange={onChange} />
+                                <input type="date" className="form-control" name="Date" id="Date" value={credentials.Date} onChange={onChange} required/>
                             </div>
                             <div className="col-md-6">
                                 <label htmlFor="Time" className="form-label">Time</label>
