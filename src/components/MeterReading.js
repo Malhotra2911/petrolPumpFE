@@ -192,18 +192,28 @@ const MeterReading = (props) => {
     const ttSalesMSStockAsFloat = parseFloat(ttCredentials.ttSalesMSStock)
     const ttSalesHSDStockAsFloat = parseFloat(ttCredentials.ttSalesHSDStock)
     const updatedTTCredentials = {...ttCredentials, ttLoadMS: ttLoadMSAsFloat, ttLoadHSD: ttLoadHSDAsFloat, MPB: MPBAsFloat, MOB: MOBAsFloat, invoiceMS: invoiceMSAsFloat, invoiceHSD: invoiceHSDAsFloat, sampleMSHydro: sampleMSHydroAsFloat, sampleMSTemp: sampleMSTempAsFloat, sampleMS: sampleMSAsFloat, sampleHSDHydro: sampleHSDHydroAsFloat, sampleHSDTemp: sampleHSDTempAsFloat, sampleHSD: sampleHSDAsFloat, tlbrMSDip: tlbrMSDipAsFloat, tlbrMSStock: tlbrMSStockAsFloat, tlbrMSDU1: tlbrMSDU1AsFloat, tlbrMSDU2: tlbrMSDU2AsFloat, tlbrHSDDip: tlbrHSDDipAsFloat, tlbrHSDStock: tlbrHSDStockAsFloat, tlbrHSDDU1: tlbrHSDDU1AsFloat, tlbrHSDDU2: tlbrHSDDU2AsFloat, tlarMSDip: tlarMSDipAsFloat, tlarMSStock: tlarMSStockAsFloat, tlarMSDU1: tlarMSDU1AsFloat, tlarMSDU2: tlarMSDU2AsFloat, tlarHSDDip: tlarHSDDipAsFloat, tlarHSDStock: tlarHSDStockAsFloat, tlarHSDDU1: tlarHSDDU1AsFloat, tlarHSDDU2: tlarHSDDU2AsFloat, ptlarMSStock: ptlarMSStockAsFloat, ptlarMSDU1: ptlarMSDU1AsFloat, ptlarMSDU2: ptlarMSDU2AsFloat, ptlarHSDStock: ptlarHSDStockAsFloat, ptlarHSDDU1: ptlarHSDDU1AsFloat, ptlarHSDDU2: ptlarHSDDU2AsFloat, saleTestingMS: saleTestingMSAsFloat, saleTestingHSD: saleTestingHSDAsFloat, resultDensityMS: resultDensityMSAsFloat, resultDensityHSD: resultDensityHSDAsFloat, resultStockMS: resultStockMSAsFloat, resultStockHSD: resultStockHSDAsFloat, ttSalesMSDU1Sale: ttSalesMSDU1SaleAsFloat, ttSalesHSDDU1Sale: ttSalesHSDDU1SaleAsFloat, ttSalesMSDU2Sale: ttSalesMSDU2SaleAsFloat, ttSalesHSDDU2Sale: ttSalesHSDDU2SaleAsFloat, ttSalesMStotalSale: ttSalesMStotalSaleAsFloat, ttSalesHSDtotalSale: ttSalesHSDtotalSaleAsFloat, ttSalesMSSale: ttSalesMSSaleAsFloat, ttSalesHSDSale: ttSalesHSDSaleAsFloat, ttSalesMSStock: ttSalesMSStockAsFloat, ttSalesHSDStock: ttSalesHSDStockAsFloat}
-    const response2 = await axios.post(`${backendApiUrl}tt/add-tt`, updatedTTCredentials, {
-        headers : {
-            'auth-token' : sessionStorage.getItem('token')
+    if(radio == 'Yes') {
+        const response2 = await axios.post(`${backendApiUrl}tt/add-tt`, updatedTTCredentials, {
+            headers : {
+                'auth-token' : sessionStorage.getItem('token')
+            }
+        });
+        if(response1.data && response2.data) {
+            alert("Added Successfully...");
+            window.location.reload();
+            props.showAlert("Added Successfully...", "success");
         }
-    });
-    if(response1.data && response2.data) {
-        alert("Added Successfully...");
-        window.location.reload();
-        props.showAlert("Added Successfully...", "success");
+        console.log(response1.data);
+        console.log(response2.data);
     }
-    console.log(response1.data);
-    console.log(response2.data);
+    if(radio == 'No'){
+        if(response1.data) {
+            alert("Added Successfully...");
+            window.location.reload();
+            props.showAlert("Added Successfully...", "success");
+        }
+        console.log(response1.data);
+    }
   }
   
   const handleSearchSubmit = async (e) => {
