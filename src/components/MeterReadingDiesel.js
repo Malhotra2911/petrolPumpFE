@@ -45,17 +45,84 @@ const MeterReadingDiesel = (props) => {
     toDate : ""
   }
 
+  const ttData = {
+    ttDate : "",
+    invoiceNo : "",
+    ttNo : "",
+    ttLoadMS : "",
+    ttLoadHSD : "",
+    transporter : "",
+    driverName : "",
+    MPB : "",
+    MOB : "",
+    ttLoadingDate : "",
+    ttLoadingTime : "",
+    ttUnloadingDate : "",
+    ttUnloadingTime : "",
+    invoiceMS : "",
+    invoiceMSRemark : "",
+    invoiceHSD : "",
+    invoiceHSDRemark : "",
+    sampleMSHydro : "",
+    sampleMSTemp : "",
+    sampleMS : "", 
+    sampleHSDHydro : "",
+    sampleHSDTemp : "",
+    sampleHSD : "",
+    tlbrMSDip : "",
+    tlbrMSStock : "",
+    tlbrMSDU1 : "",
+    tlbrMSDU2 : "",
+    tlbrHSDDip : "",
+    tlbrHSDStock : "",
+    tlbrHSDDU1 : "",
+    tlbrHSDDU2 : "",
+    tlarMSDip : "",
+    tlarMSStock : "",
+    tlarMSDU1 : "",
+    tlarMSDU2 : "",
+    tlarHSDDip : "",
+    tlarHSDStock : "",
+    tlarHSDDU1 : "",
+    tlarHSDDU2 : "",
+    ptlarMSStock : "",
+    ptlarMSDU1 : "",
+    ptlarMSDU2 : "",
+    ptlarHSDStock : "",
+    ptlarHSDDU1 : "",
+    ptlarHSDDU2 : "",
+    saleTestingMS : "",
+    saleTestingHSD : "",
+    resultDensityMS : "",
+    resultDensityHSD : "",
+    resultStockMS : "",
+    resultStockHSD : "",
+    ttSalesMSDU1Sale : "",
+    ttSalesHSDDU1Sale : "",
+    ttSalesMSDU2Sale : "",
+    ttSalesHSDDU2Sale : "",
+    ttSalesMStotalSale : "",
+    ttSalesHSDtotalSale : "",
+    ttSalesMSSale : "",
+    ttSalesHSDSale : "",
+    ttSalesMSStock : "",
+    ttSalesHSDStock : "",
+    remark : "",
+  }
+
   const [credentials, setCredentials] = useState([data]);
   const [myDatas, setMyDatas] = useState([]);
   const [isError, setIsError] = useState([]);
   const [searchCredentials, setSearchCredentials] = useState([searchData]);
   const [editDatas, setEditDatas] = useState([]);
   const [radio, setRadio] = useState([]);
+  const [ttCredentials, setTTCredentials] = useState([ttData]);
 
   const onChange = (e) => {
     setCredentials({...credentials, [e.target.name] : e.target.value});
     setSearchCredentials({...searchCredentials, [e.target.name] : e.target.value});
     setEditDatas({...editDatas, [e.target.name] : e.target.value});
+    setTTCredentials({...ttCredentials, [e.target.name] : e.target.value});
   }
 
   const handleSubmit = async (e) => {
@@ -69,17 +136,74 @@ const MeterReadingDiesel = (props) => {
     const Nozzle1AsFloat = parseFloat(credentials.Nozzle1)
     const Nozzle2AsFloat = parseFloat(credentials.Nozzle2)
     const updatedCredentials = {...credentials, Density: DensityAsFloat, Dip: DipAsFloat, WaterDip: WaterDipAsFloat, Stock: StockAsFloat, Receipt: ReceiptAsFloat, Testing: TestingAsFloat, Nozzle1: Nozzle1AsFloat, Nozzle2: Nozzle2AsFloat}
-    const response = await axios.post(`${backendApiUrl}meter/add-meterReadingDiesel`, updatedCredentials, {
+    const response1 = await axios.post(`${backendApiUrl}meter/add-meterReadingDiesel`, updatedCredentials, {
         headers : {
             'auth-token' : sessionStorage.getItem('token')
         }
     });
-    if(response.data) {
+    const ttLoadMSAsFloat = parseFloat(ttCredentials.ttLoadMS)
+    const ttLoadHSDAsFloat = parseFloat(ttCredentials.ttLoadHSD)
+    const MPBAsFloat = parseFloat(ttCredentials.MPB)
+    const MOBAsFloat = parseFloat(ttCredentials.MOB)
+    const invoiceMSAsFloat = parseFloat(ttCredentials.invoiceMS)
+    const invoiceHSDAsFloat = parseFloat(ttCredentials.invoiceHSD)
+    const sampleMSHydroAsFloat = parseFloat(ttCredentials.sampleMSHydro)
+    const sampleMSTempAsFloat = parseFloat(ttCredentials.sampleMSTemp)
+    const sampleMSAsFloat = parseFloat(ttCredentials.sampleMS)
+    const sampleHSDHydroAsFloat = parseFloat(ttCredentials.sampleHSDHydro)
+    const sampleHSDTempAsFloat = parseFloat(ttCredentials.sampleHSDTemp)
+    const sampleHSDAsFloat = parseFloat(ttCredentials.sampleHSD)
+    const tlbrMSDipAsFloat = parseFloat(ttCredentials.tlbrMSDip)
+    const tlbrMSStockAsFloat = parseFloat(ttCredentials.tlbrMSStock)
+    const tlbrMSDU1AsFloat = parseFloat(ttCredentials.tlbrMSDU1)
+    const tlbrMSDU2AsFloat = parseFloat(ttCredentials.tlbrMSDU2)
+    const tlbrHSDDipAsFloat = parseFloat(ttCredentials.tlbrHSDDip)
+    const tlbrHSDStockAsFloat = parseFloat(ttCredentials.tlbrHSDStock)
+    const tlbrHSDDU1AsFloat = parseFloat(ttCredentials.tlbrHSDDU1)
+    const tlbrHSDDU2AsFloat = parseFloat(ttCredentials.tlbrHSDDU2)
+    const tlarMSDipAsFloat = parseFloat(ttCredentials.tlarMSDip)
+    const tlarMSStockAsFloat = parseFloat(ttCredentials.tlarMSStock)
+    const tlarMSDU1AsFloat = parseFloat(ttCredentials.tlarMSDU1)
+    const tlarMSDU2AsFloat = parseFloat(ttCredentials.tlarMSDU2)
+    const tlarHSDDipAsFloat = parseFloat(ttCredentials.tlarHSDDip)
+    const tlarHSDStockAsFloat = parseFloat(ttCredentials.tlarHSDStock)
+    const tlarHSDDU1AsFloat = parseFloat(ttCredentials.tlarHSDDU1)
+    const tlarHSDDU2AsFloat = parseFloat(ttCredentials.tlarHSDDU2)
+    const ptlarMSStockAsFloat = parseFloat(ttCredentials.ptlarMSStock)
+    const ptlarMSDU1AsFloat = parseFloat(ttCredentials.ptlarMSDU1)
+    const ptlarMSDU2AsFloat = parseFloat(ttCredentials.ptlarMSDU2)
+    const ptlarHSDStockAsFloat = parseFloat(ttCredentials.ptlarHSDStock)
+    const ptlarHSDDU1AsFloat = parseFloat(ttCredentials.ptlarHSDDU1)
+    const ptlarHSDDU2AsFloat = parseFloat(ttCredentials.ptlarHSDDU2)
+    const saleTestingMSAsFloat = parseFloat(ttCredentials.saleTestingMS)
+    const saleTestingHSDAsFloat = parseFloat(ttCredentials.saleTestingHSD)
+    const resultDensityMSAsFloat = parseFloat(ttCredentials.resultDensityMS)
+    const resultDensityHSDAsFloat = parseFloat(ttCredentials.resultDensityHSD)
+    const resultStockMSAsFloat = parseFloat(ttCredentials.resultStockMS)
+    const resultStockHSDAsFloat = parseFloat(ttCredentials.resultStockHSD)
+    const ttSalesMSDU1SaleAsFloat = parseFloat(ttCredentials.ttSalesMSDU1Sale)
+    const ttSalesHSDDU1SaleAsFloat = parseFloat(ttCredentials.ttSalesHSDDU1Sale)
+    const ttSalesMSDU2SaleAsFloat = parseFloat(ttCredentials.ttSalesMSDU2Sale)
+    const ttSalesHSDDU2SaleAsFloat = parseFloat(ttCredentials.ttSalesHSDDU2Sale)
+    const ttSalesMStotalSaleAsFloat = parseFloat(ttCredentials.ttSalesMStotalSale)
+    const ttSalesHSDtotalSaleAsFloat = parseFloat(ttCredentials.ttSalesHSDtotalSale)
+    const ttSalesMSSaleAsFloat = parseFloat(ttCredentials.ttSalesMSSale)
+    const ttSalesHSDSaleAsFloat = parseFloat(ttCredentials.ttSalesHSDSale)
+    const ttSalesMSStockAsFloat = parseFloat(ttCredentials.ttSalesMSStock)
+    const ttSalesHSDStockAsFloat = parseFloat(ttCredentials.ttSalesHSDStock)
+    const updatedTTCredentials = {...ttCredentials, ttLoadMS: ttLoadMSAsFloat, ttLoadHSD: ttLoadHSDAsFloat, MPB: MPBAsFloat, MOB: MOBAsFloat, invoiceMS: invoiceMSAsFloat, invoiceHSD: invoiceHSDAsFloat, sampleMSHydro: sampleMSHydroAsFloat, sampleMSTemp: sampleMSTempAsFloat, sampleMS: sampleMSAsFloat, sampleHSDHydro: sampleHSDHydroAsFloat, sampleHSDTemp: sampleHSDTempAsFloat, sampleHSD: sampleHSDAsFloat, tlbrMSDip: tlbrMSDipAsFloat, tlbrMSStock: tlbrMSStockAsFloat, tlbrMSDU1: tlbrMSDU1AsFloat, tlbrMSDU2: tlbrMSDU2AsFloat, tlbrHSDDip: tlbrHSDDipAsFloat, tlbrHSDStock: tlbrHSDStockAsFloat, tlbrHSDDU1: tlbrHSDDU1AsFloat, tlbrHSDDU2: tlbrHSDDU2AsFloat, tlarMSDip: tlarMSDipAsFloat, tlarMSStock: tlarMSStockAsFloat, tlarMSDU1: tlarMSDU1AsFloat, tlarMSDU2: tlarMSDU2AsFloat, tlarHSDDip: tlarHSDDipAsFloat, tlarHSDStock: tlarHSDStockAsFloat, tlarHSDDU1: tlarHSDDU1AsFloat, tlarHSDDU2: tlarHSDDU2AsFloat, ptlarMSStock: ptlarMSStockAsFloat, ptlarMSDU1: ptlarMSDU1AsFloat, ptlarMSDU2: ptlarMSDU2AsFloat, ptlarHSDStock: ptlarHSDStockAsFloat, ptlarHSDDU1: ptlarHSDDU1AsFloat, ptlarHSDDU2: ptlarHSDDU2AsFloat, saleTestingMS: saleTestingMSAsFloat, saleTestingHSD: saleTestingHSDAsFloat, resultDensityMS: resultDensityMSAsFloat, resultDensityHSD: resultDensityHSDAsFloat, resultStockMS: resultStockMSAsFloat, resultStockHSD: resultStockHSDAsFloat, ttSalesMSDU1Sale: ttSalesMSDU1SaleAsFloat, ttSalesHSDDU1Sale: ttSalesHSDDU1SaleAsFloat, ttSalesMSDU2Sale: ttSalesMSDU2SaleAsFloat, ttSalesHSDDU2Sale: ttSalesHSDDU2SaleAsFloat, ttSalesMStotalSale: ttSalesMStotalSaleAsFloat, ttSalesHSDtotalSale: ttSalesHSDtotalSaleAsFloat, ttSalesMSSale: ttSalesMSSaleAsFloat, ttSalesHSDSale: ttSalesHSDSaleAsFloat, ttSalesMSStock: ttSalesMSStockAsFloat, ttSalesHSDStock: ttSalesHSDStockAsFloat}
+    const response2 = await axios.post(`${backendApiUrl}tt/add-tt`, updatedTTCredentials, {
+        headers : {
+            'auth-token' : sessionStorage.getItem('token')
+        }
+    });
+    if(response1.data && response2.data) {
         alert("Added Successfully...");
         window.location.reload();
         props.showAlert("Added Successfully...", "success");
     }
-    console.log(response.data);
+    console.log(response1.data);
+    console.log(response2.data);
   }
 
   const handleSearchSubmit = async (e) => {
@@ -95,8 +219,7 @@ const MeterReadingDiesel = (props) => {
     axios.get(`${backendApiUrl}meter/get-meterReadingDiesel?id=${e}`)
     .then((res) => {
         setEditDatas(res.data.data[0]);
-    })
-    .catch((error) => {
+    }).catch((error) => {
         setIsError(error.message);
     })
   }
@@ -158,8 +281,62 @@ const MeterReadingDiesel = (props) => {
         setIsError(error.message);
     })
   }, [])
-  
 
+  function calculateResultDensity(sampleDensityId, invoiceDensityId, resultId) {
+    let sampleDensity = document.getElementById(sampleDensityId).value;
+    let invoiceDensity = document.getElementById(invoiceDensityId).value;
+
+    let result = Number(sampleDensity) - Number(invoiceDensity);
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+
+  function calculateResultStock(tlarStockId, tlbrStockId, ttLoadId, resultId) {
+    let tlarStock = document.getElementById(tlarStockId).value; 
+    let tlbrStock = document.getElementById(tlbrStockId).value;
+    let ttLoad = document.getElementById(ttLoadId).value;
+
+    let result = (Number(tlarStock) - (Number(tlbrStock) + Number(ttLoad)));
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+
+  function calculateDUSale(tlarDUId, ptlarDUId, resultId) {
+    let tlarDU = document.getElementById(tlarDUId).value;
+    let ptlarDU = document.getElementById(ptlarDUId).value;
+
+    let result = Number(tlarDU) - Number(ptlarDU);
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+
+  function calculateTotalSale(du1Id, du2Id, resultId) {
+    let du1 = parseFloat(ttCredentials[du1Id]) || 0;
+    let du2 = parseFloat(ttCredentials[du2Id]) || 0;
+
+    let result = Number(du1) + Number(du2);
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+
+  function calculateSale(totalSaleId, testingId, resultId) {
+    let totalSale = parseFloat(ttCredentials[totalSaleId]) || 0;
+    let testing = document.getElementById(testingId).value;
+
+    let result = Number(totalSale) - Number(testing);
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+
+  function calculateStock(tlbrStockId, saleId, resultId) {
+    let tlbrStock = document.getElementById(tlbrStockId).value;
+    let sale = parseFloat(ttCredentials[saleId]) || 0;
+
+    let result = Number(tlbrStock) + Number(sale);
+    ttCredentials[resultId] = parseFloat(result) || 0;
+    setTTCredentials({...ttCredentials, [resultId] : result})
+  }
+  
   return (
     sessionStorage.getItem('token') ?
     <div className='MeterReading'>
@@ -280,15 +457,15 @@ const MeterReadingDiesel = (props) => {
                             <div className="row">
                                 <div className="col-md-3">
                                     <label htmlFor="ttDate" className="form-label">TT Date</label>
-                                    <input type="date" className="form-control" name="ttDate" id="ttDate" />
+                                    <input type="date" className="form-control" name="ttDate" id="ttDate" value={ttCredentials.ttDate} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="invoiceNo" className="form-label">Invoice No.</label>
-                                    <input type="text" className="form-control" name="invoiceNo" id="invoiceNo" />
+                                    <input type="text" className="form-control" name="invoiceNo" id="invoiceNo" value={ttCredentials.invoiceNo} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="ttNo" className="form-label">TT No.</label>
-                                    <input type="text" className="form-control" name="ttNo" id="ttNo" />
+                                    <input type="text" className="form-control" name="ttNo" id="ttNo" value={ttCredentials.ttNo} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="" className="form-label">TT Load (L)</label> <br />
@@ -298,8 +475,8 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-7">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" />
+                                            <input type="text" className="form-control mx-2 my-2" name="ttLoadMS" id="ttLoadMS" value={ttCredentials.ttLoadMS} onChange={onChange} onInput={() => calculateResultStock("tlarMSStock", "tlbrMSStock", "ttLoadMS", "resultStockMS")} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttLoadHSD" id="ttLoadHSD" value={ttCredentials.ttLoadHSD} onChange={onChange} onInput={() => calculateResultStock("tlarHSDStock", "tlbrHSDStock", "ttLoadHSD", "resultStockHSD")} />
                                         </div>
                                     </div>
                                 </div>
@@ -309,11 +486,11 @@ const MeterReadingDiesel = (props) => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <label htmlFor="transporter" className="form-label">Transporter</label>
-                                    <input type="text" className="form-control" name="transporter" id="transporter" />
+                                    <input type="text" className="form-control" name="transporter" id="transporter" value={ttCredentials.transporter} onChange={onChange} />
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="driverName" className="form-label">Driver Name</label>
-                                    <input type="text" className="form-control" name="driverName" id="driverName" />
+                                    <input type="text" className="form-control" name="driverName" id="driverName" value={ttCredentials.driverName} onChange={onChange} />
                                 </div>
                             </div>
                         </div>
@@ -321,11 +498,11 @@ const MeterReadingDiesel = (props) => {
                             <div className="row">
                                 <div className="col-md-3">
                                     <label htmlFor="mpb" className="form-label">MPB</label>
-                                    <input type="text" className="form-control" name="mpb" id="mpb" />
+                                    <input type="text" className="form-control" name="MPB" id="MPB" value={ttCredentials.MPB} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="MOB" className="form-label">MOB</label>
-                                    <input type="text" className="form-control" name="MOB" id="MOB" />
+                                    <input type="text" className="form-control" name="MOB" id="MOB" value={ttCredentials.MOB} onChange={onChange} />
                                 </div>
                             </div>
                         </div>
@@ -333,19 +510,19 @@ const MeterReadingDiesel = (props) => {
                             <div className="row">
                                 <div className="col-md-3">
                                     <label htmlFor="ttLoadingDate" className="form-label">TT Loading Date</label>
-                                    <input type="date" className="form-control" name="ttLoadingDate" id="ttLoadingDate" />
+                                    <input type="date" className="form-control" name="ttLoadingDate" id="ttLoadingDate" value={ttCredentials.ttLoadingDate} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="ttLoadingTime" className="form-label">TT Loading Time</label>
-                                    <input type="time" className="form-control" name="ttLoadingTime" id="ttLoadingTime" />
+                                    <input type="time" className="form-control" name="ttLoadingTime" id="ttLoadingTime" value={ttCredentials.ttLoadingTime} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="ttUnloadingDate" className="form-label">TT Unloading Date</label>
-                                    <input type="date" className="form-control" name="ttUnloadingDate" id="ttUnloadingDate" />
+                                    <input type="date" className="form-control" name="ttUnloadingDate" id="ttUnloadingDate" value={ttCredentials.ttUnloadingDate} onChange={onChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label htmlFor="ttUnloadingTime" className="form-label">TT Unloading Time</label>
-                                    <input type="time" className="form-control" name="ttUnloadingTime" id="ttUnloadingTime" />
+                                    <input type="time" className="form-control" name="ttUnloadingTime" id="ttUnloadingTime" value={ttCredentials.ttUnloadingTime} onChange={onChange} />
                                 </div>
                             </div>
                         </div>
@@ -359,12 +536,12 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-4">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' />
+                                            <input type="text" className="form-control mx-2 my-2" name="invoiceMS" id="invoiceMS" placeholder='15c' value={ttCredentials.invoiceMS} onChange={onChange} onInput={() => calculateResultDensity("sampleMS", "invoiceMS", "resultDensityMS")} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="invoiceHSD" id="invoiceHSD" placeholder='15c' value={ttCredentials.invoiceHSD} onChange={onChange} onInput={() => calculateResultDensity("sampleHSD", "invoiceHSD", "resultDensityHSD")} />
                                         </div>
                                         <div className="col-md-4">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Remark' /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Remark' /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="invoiceMSRemark" id="invoiceMSRemark" placeholder='Remark' value={ttCredentials.invoiceMSRemark} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="invoiceHSDRemark" id="invoiceHSDRemark" placeholder='Remark' value={ttCredentials.invoiceHSDRemark} onChange={onChange} /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -378,16 +555,16 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-3">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Hydro.' /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Hydro.' />
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleMSHydro" id="sampleMSHydro" placeholder='Hydro.' value={ttCredentials.sampleMSHydro} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleHSDHydro" id="sampleHSDHydro" placeholder='Hydro.' value={ttCredentials.sampleHSDHydro} onChange={onChange} />
                                         </div>
                                         <div className="col-md-3">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Temp.' /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='Temp.' /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleMSTemp" id="sampleMSTemp" placeholder='Temp.' value={ttCredentials.sampleMSTemp} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleHSDTemp" id="sampleHSDTemp" placeholder='Temp.' value={ttCredentials.sampleHSDTemp} onChange={onChange} /> 
                                         </div>
                                         <div className="col-md-3">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='15c' /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleMS" id="sampleMS" placeholder='15c' value={ttCredentials.sampleMS} onChange={onChange} onInput={() => calculateResultDensity("sampleMS", "invoiceMS", "resultDensityMS")} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="sampleHSD" id="sampleHSD" placeholder='15c' value={ttCredentials.sampleHSD} onChange={onChange} onInput={() => calculateResultDensity("sampleHSD", "invoiceHSD", "resultDensityHSD")} /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -405,23 +582,23 @@ const MeterReadingDiesel = (props) => {
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DIP' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" />
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrMSDip" id="tlbrMSDip" value={ttCredentials.tlbrMSDip} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrHSDDip" id="tlbrHSDDip" value={ttCredentials.tlbrHSDDip} onChange={onChange} />
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='STOCK' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrMSStock" id="tlbrMSStock" value={ttCredentials.tlbrMSStock} onChange={onChange} onInput={() => {calculateResultStock("tlarMSStock", "tlbrMSStock", "ttLoadMS", "resultStockMS"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrHSDStock" id="tlbrHSDStock" value={ttCredentials.tlbrHSDStock} onChange={onChange} onInput={() => {calculateResultStock("tlarHSDStock", "tlbrHSDStock", "ttLoadHSD", "resultStockHSD"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} /> 
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU1' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrMSDU1" id="tlbrMSDU1" value={ttCredentials.tlbrMSDU1} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrHSDDU1" id="tlbrHSDDU1" value={ttCredentials.tlbrHSDDU1} onChange={onChange} /> 
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU2' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrMSDU2" id="tlbrMSDU2" value={ttCredentials.tlbrMSDU2} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlbrHSDDU2" id="tlbrHSDDU2" value={ttCredentials.tlbrHSDDU2} onChange={onChange} /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -435,8 +612,8 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-6">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="resultDensityMS" id="resultDensityMS" value={ttCredentials.resultDensityMS} onChange={onChange} disabled/> 
+                                            <input type="text" className="form-control mx-2 my-2" name="resultDensityHSD" id="resultDensityHSD" value={ttCredentials.resultDensityHSD} onChange={onChange} disabled/> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -454,23 +631,23 @@ const MeterReadingDiesel = (props) => {
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DIP' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" />
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarMSDip" id="tlarMSDip" value={ttCredentials.tlarMSDip} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarHSDDip" id="tlarHSDDip" value={ttCredentials.tlarHSDDip} onChange={onChange} />
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='STOCK' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarMSStock" id="tlarMSStock" value={ttCredentials.tlarMSStock} onChange={onChange} onInput={() => calculateResultStock("tlarMSStock", "tlbrMSStock", "ttLoadMS", "resultStockMS")} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarHSDStock" id="tlarHSDStock" value={ttCredentials.tlarHSDStock} onChange={onChange} onInput={() => calculateResultStock("tlarHSDStock", "tlbrHSDStock", "ttLoadHSD", "resultStockHSD")} /> 
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU1' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarMSDU1" id="tlarMSDU1" value={ttCredentials.tlarMSDU1} onChange={onChange} onInput={() => {calculateDUSale("tlarMSDU1", "ptlarMSDU1", "ttSalesMSDU1Sale"), calculateTotalSale("ttSalesMSDU1Sale", "ttSalesMSDU2Sale", "ttSalesMStotalSale"), calculateSale("ttSalesMStotalSale", "saleTestingMS", "ttSalesMSSale"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarHSDDU1" id="tlarHSDDU1" value={ttCredentials.tlarHSDDU1} onChange={onChange} onInput={() => {calculateDUSale("tlarHSDDU1", "ptlarHSDDU1", "ttSalesHSDDU1Sale"), calculateTotalSale("ttSalesHSDDU1Sale", "ttSalesHSDDU2Sale", "ttSalesHSDtotalSale"), calculateSale("ttSalesHSDtotalSale", "saleTestingHSD", "ttSalesHSDSale"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} /> 
                                         </div>
                                         <div className="col-md-2">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU2' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarMSDU2" id="tlarMSDU2" value={ttCredentials.tlarMSDU2} onChange={onChange} onInput={() => {calculateDUSale("tlarMSDU2", "ptlarMSDU2", "ttSalesMSDU2Sale"), calculateTotalSale("ttSalesMSDU1Sale", "ttSalesMSDU2Sale", "ttSalesMStotalSale"), calculateSale("ttSalesMStotalSale", "saleTestingMS", "ttSalesMSSale"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="tlarHSDDU2" id="tlarHSDDU2" value={ttCredentials.tlarHSDDU2} onChange={onChange} onInput={() => {calculateDUSale("tlarHSDDU2", "ptlarHSDDU2", "ttSalesHSDDU2Sale"), calculateTotalSale("ttSalesHSDDU1Sale", "ttSalesHSDDU2Sale", "ttSalesHSDtotalSale"), calculateSale("ttSalesHSDtotalSale", "saleTestingHSD", "ttSalesHSDSale"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -484,8 +661,8 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-6">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" />
+                                            <input type="text" className="form-control mx-2 my-2" name="resultStockMS" id="resultStockMS" value={ttCredentials.resultStockMS} onChange={onChange} disabled/> 
+                                            <input type="text" className="form-control mx-2 my-2" name="resultStockHSD" id="resultStockHSD" value={ttCredentials.resultStockHSD} onChange={onChange} disabled/>
                                         </div>
                                     </div>                                    
                                 </div>
@@ -503,18 +680,18 @@ const MeterReadingDiesel = (props) => {
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='STOCK' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarMSStock" id="ptlarMSStock" value={ttCredentials.ptlarMSStock} onChange={onChange} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarHSDStock" id="ptlarHSDStock" value={ttCredentials.ptlarHSDStock} onChange={onChange} /> 
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU1' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarMSDU1" id="ptlarMSDU1" value={ttCredentials.ptlarMSDU1} onChange={onChange} onInput={() => {calculateDUSale("tlarMSDU1", "ptlarMSDU1", "ttSalesMSDU1Sale"), calculateTotalSale("ttSalesMSDU1Sale", "ttSalesMSDU2Sale", "ttSalesMStotalSale"), calculateSale("ttSalesMStotalSale", "saleTestingMS", "ttSalesMSSale"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarHSDDU1" id="ptlarHSDDU1" value={ttCredentials.ptlarHSDDU1} onChange={onChange} onInput={() => {calculateDUSale("tlarHSDDU1", "ptlarHSDDU1", "ttSalesHSDDU1Sale"), calculateTotalSale("ttSalesHSDDU1Sale", "ttSalesHSDDU2Sale", "ttSalesHSDtotalSale"), calculateSale("ttSalesHSDtotalSale", "saleTestingHSD", "ttSalesHSDSale"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} /> 
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='DU2' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarMSDU2" id="ptlarMSDU2" value={ttCredentials.ptlarMSDU2} onChange={onChange} onInput={() => {calculateDUSale("tlarMSDU2", "ptlarMSDU2", "ttSalesMSDU2Sale"), calculateTotalSale("ttSalesMSDU1Sale", "ttSalesMSDU2Sale", "ttSalesMStotalSale"), calculateSale("ttSalesMStotalSale", "saleTestingMS", "ttSalesMSSale"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ptlarHSDDU2" id="ptlarHSDDU2" value={ttCredentials.ptlarHSDDU2} onChange={onChange} onInput={() => {calculateDUSale("tlarHSDDU2", "ptlarHSDDU2", "ttSalesHSDDU2Sale"), calculateTotalSale("ttSalesHSDDU1Sale", "ttSalesHSDDU2Sale", "ttSalesHSDtotalSale"), calculateSale("ttSalesHSDtotalSale", "saleTestingHSD", "ttSalesHSDSale"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} /> 
                                         </div>
                                         <label htmlFor="" className="form-label"><u>SALE TESTING</u></label> <br />
                                         <div className="col-md-3">
@@ -522,8 +699,8 @@ const MeterReadingDiesel = (props) => {
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled />
                                         </div>
                                         <div className="col-md-3">
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id=""  />
+                                            <input type="text" className="form-control mx-2 my-2" name="saleTestingMS" id="saleTestingMS" value={ttCredentials.saleTestingMS} onChange={onChange} onInput={() => {calculateSale("ttSalesMStotalSale", "saleTestingMS", "ttSalesMSSale"), calculateStock("tlbrMSStock", "ttSalesMSSale", "ttSalesMSStock")}} /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="saleTestingHSD" id="saleTestingHSD" value={ttCredentials.saleTestingHSD} onChange={onChange} onInput={() => {calculateSale("ttSalesHSDtotalSale", "saleTestingHSD", "ttSalesHSDSale"), calculateStock("tlbrHSDStock", "ttSalesHSDSale", "ttSalesHSDStock")}} />
                                         </div>
                                     </div>                                    
                                 </div>
@@ -542,19 +719,19 @@ const MeterReadingDiesel = (props) => {
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='MS' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesMSDU1Sale" id="ttSalesMSDU1Sale" value={ttCredentials.ttSalesMSDU1Sale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesMSDU2Sale" id="ttSalesMSDU2Sale" value={ttCredentials.ttSalesMSDU2Sale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesMStotalSale" id="ttSalesMStotalSale" value={ttCredentials.ttSalesMStotalSale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesMSSale" id="ttSalesMSSale" value={ttCredentials.ttSalesMSSale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesMSStock" id="ttSalesMSStock" value={ttCredentials.ttSalesMSStock} onChange={onChange} disabled /> 
                                         </div>
                                         <div className="col-md-3">
                                             <input type="text" className="form-control mx-2 my-2" name="" id="" placeholder='HSD' disabled /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
-                                            <input type="text" className="form-control mx-2 my-2" name="" id="" /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesHSDDU1Sale" id="ttSalesHSDDU1Sale" value={ttCredentials.ttSalesHSDDU1Sale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesHSDDU2Sale" id="ttSalesHSDDU2Sale" value={ttCredentials.ttSalesHSDDU2Sale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesHSDtotalSale" id="ttSalesHSDtotalSale" value={ttCredentials.ttSalesHSDtotalSale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesHSDSale" id="ttSalesHSDSale" value={ttCredentials.ttSalesHSDSale} onChange={onChange} disabled /> 
+                                            <input type="text" className="form-control mx-2 my-2" name="ttSalesHSDStock" id="ttSalesHSDStock" value={ttCredentials.ttSalesHSDStock} onChange={onChange} disabled /> 
                                         </div>
                                     </div>                                    
                                 </div>
@@ -566,7 +743,7 @@ const MeterReadingDiesel = (props) => {
                                     <div className="row">
                                         <div className="col-md-8">
                                             <label htmlFor="" className="form-label">Remark</label>
-                                            <input type="text" className="form-control" name="" id="" />
+                                            <input type="text" className="form-control" name="remark" id="remark" value={ttCredentials.remark} onChange={onChange} />
                                         </div>
                                     </div>
                                 </div>
