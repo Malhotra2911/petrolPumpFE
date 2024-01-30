@@ -206,7 +206,7 @@ const MeterReadingDiesel = (props) => {
         console.log(response1.data);
         console.log(response2.data);
     }
-    if(radio == 'No'){
+    if(radio != 'Yes'){
         if(response1.data) {
             alert("Added Successfully...");
             window.location.reload();
