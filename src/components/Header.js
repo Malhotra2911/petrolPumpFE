@@ -36,6 +36,7 @@ export default function Header() {
                 <ul className="dropdown-menu">
                   <li><Link className="dropdown-item" to="/meterReading">MS</Link></li>
                   <li><Link className="dropdown-item" to="/meterReadingDiesel">HSD</Link></li>
+                  <li><Link className="dropdown-item" to="/tt">TT</Link></li>
                 </ul>
               </li>
             </ul>}

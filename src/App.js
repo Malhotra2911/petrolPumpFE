@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import Alert from './components/Alert';
 import { useState } from 'react';
+import TT from './components/TT';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
               <Route exact path="/shiftEntry" element={<ShiftEntry showAlert={showAlert} />} />
               <Route exact path="/login" element={<Login showAlert={showAlert} />} />
               <Route exact path="/profile" element={<Profile showAlert={showAlert} />} />
+              <Route exact path="/tt" element={<TT showAlert={showAlert} />} />
             </Routes>
           </div>
       </BrowserRouter>
